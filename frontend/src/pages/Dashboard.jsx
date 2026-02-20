@@ -2,6 +2,7 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 export default function Dashboard() {
+   const API_URL = import.meta.env.VITE_API_URL;
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const username = user?.user_metadata?.display_name  // ← directly from user
