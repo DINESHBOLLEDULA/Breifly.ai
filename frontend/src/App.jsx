@@ -4,7 +4,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import LandingPage from './pages/LandingPage'
-
+import { ThemeProvider } from './context/ThemeContext'
 
 function ProtectedRoute({ children }) {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -24,7 +24,8 @@ function PublicRoute({ children }) {
 
 function App() {
   return (
-    <Routes>
+    <ThemeProvider>
+      <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={
         <PublicRoute>
@@ -42,6 +43,7 @@ function App() {
         </ProtectedRoute>
       } />
     </Routes>
+    </ThemeProvider>
   )
 }
 export default App;

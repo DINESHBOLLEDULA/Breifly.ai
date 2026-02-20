@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
+import { Moon, Sparkles, Sun } from "lucide-react";
+import { useTheme } from '../context/ThemeContext';
 
 export default function Signup() {
   const { signUp } = useAuth()
@@ -11,7 +13,7 @@ export default function Signup() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-
+  const { isDark, toggleTheme } = useTheme();
 
 
   const handleSignUp = async () => {
@@ -29,6 +31,7 @@ export default function Signup() {
 
   if (success) {
     return (
+      
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center">
           <div className="text-4xl mb-4">📧</div>
@@ -43,7 +46,35 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="relative min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 dark:bg-background-dark/70 border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <div className="size-8 bg-accent-teal rounded-lg flex items-center justify-center text-white">
+                <Sparkles size={18} fill="white" />
+              </div>
+              <span className="text-xl font-bold tracking-tight text-accent-teal">Breifly.ai</span>
+            </div>
+            <nav className="hidden md:flex items-center gap-8">
+              {['Features', 'Integrations', 'Languages'].map((item) => (
+                <a key={item} href="#" className="text-sm font-medium hover:text-accent-teal dark:hover:text-accent-teal transition-colors">{item}</a>
+              ))}
+            </nav>
+          </div>
+          <div className="flex items-center gap-4 ">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            
+          </div>
+        </div>
+      </header>
+    
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Sign Up</h2>
 
@@ -87,6 +118,7 @@ export default function Signup() {
           </p>
         </div>
       </div>
+    </div>
     </div>
   )
 }
