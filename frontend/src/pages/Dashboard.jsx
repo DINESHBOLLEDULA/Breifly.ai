@@ -9,9 +9,8 @@ import { useTheme } from '../context/ThemeContext';
 
 
 export default function Dashboard() {
-  const { getToken } = useAuth()
    const API_URL = import.meta.env.VITE_API_URL;
-  const { user, signOut } = useAuth()
+  const { user, signOut,getToken } = useAuth()
   const navigate = useNavigate()
   const username = user?.user_metadata?.display_name  // ← directly from user
   const { isDark, toggleTheme } = useTheme();
@@ -57,7 +56,7 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl shadow p-6">
           <p className="text-gray-600">
-            Welcome back, <strong>{username.toUpperCase()}</strong>!
+            Welcome back, <strong>{username?.toUpperCase() ?? 'User'}</strong>!
           </p>
           <p className="text-gray-400 text-sm mt-1">{user?.email}</p>
           <button onClick={testJWT} className="bg-blue-500 text-white px-4 py-2 rounded">
