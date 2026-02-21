@@ -6,19 +6,19 @@ import Dashboard from './pages/Dashboard'
 import LandingPage from './pages/LandingPage'
 import { ThemeProvider } from './context/ThemeContext'
 
+// Only renders children when the user IS logged in.
+// AuthProvider already handles the loading state, so by the time
+// these route guards run the session is already resolved.
 function ProtectedRoute({ children }) {
-  const API_URL = import.meta.env.VITE_API_URL;
-  const { user, loading } = useAuth()
-  if (loading) return <div>Loading...</div>
-  if (!user) return <Navigate to="/login" />
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" replace />
   return children
 }
 
-// Add this in App.jsx
+// Only renders children when the user is NOT logged in.
 function PublicRoute({ children }) {
-  const { user, loading } = useAuth()
-  if (loading) return <div>Loading...</div>
-  if (user) return <Navigate to="/dashboard" />  // already logged in → dashboard
+  const { user } = useAuth()
+  if (user) return <Navigate to="/dashboard" replace />
   return children
 }
 
@@ -26,24 +26,28 @@ function App() {
   return (
     <ThemeProvider>
       <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={
-        <PublicRoute>
-          <Login />
-        </PublicRoute>
-      } />
-      <Route path="/signup" element={
-        <PublicRoute>
-          <Signup />
-        </PublicRoute>
-      } />
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-    </Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+        <Route path="/signup" element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        } />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+
+        {/* Catch-all: any unknown URL → landing page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </ThemeProvider>
   )
 }
-export default App;
+
+export default App
